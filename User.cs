@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Eksamensopgave
 {
-    public class User : IComparable 
+    class User : IComparable 
     {
         public User(string firstname, string lastname, string username, string email, decimal balance)
         {
@@ -26,7 +26,9 @@ namespace Eksamensopgave
                 if (value != null)
                 {
                     _Firstname = value;
-                } 
+                }
+                else
+                    throw new NullReferenceException("Firstname was empty");
             } 
         }
 
@@ -40,6 +42,8 @@ namespace Eksamensopgave
                 {
                     _Lastname = value;
                 }
+                else
+                    throw new NullReferenceException("Lastname was empty");
             }
         }
 
@@ -54,6 +58,8 @@ namespace Eksamensopgave
                 {
                     _Username = value;
                 }
+                else
+                    throw new ArgumentException("Username was invalid");
             } 
         }
 
@@ -68,9 +74,36 @@ namespace Eksamensopgave
                 {
                     _Email = value;
                 }
+                else
+                    throw new ArgumentException("Email was invalid");
             }
         }
-        public decimal Balance { get; set; }
+
+        private decimal _Balance;
+        public decimal Balance
+        {
+            get
+            {
+                return _Balance;
+            }
+            set 
+            {
+                _Balance = value;
+            }
+        }
+
+        public override string ToString()
+        {
+            return Firstname + " " + Lastname + " " + Email;
+        }
+
+        public void UserBalanceNotification( User user, decimal balance)
+        {
+            if(balance < 50)
+            {
+                throw new ArgumentException($"Your balance is {user.Balance} dkk.");
+            }
+        }
 
         public int CompareTo(object obj)
         {
